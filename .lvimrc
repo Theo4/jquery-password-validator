@@ -1,0 +1,7 @@
+set tabstop=4     " size of a hard tabstop
+set shiftwidth=4  " size of an "indent"
+set softtabstop=4 " a combination of spaces and tabs are used to simulate tab stops at a width other than the (hard)tabstop
+set nosmarttab    " turn off smarttabs
+set noexpandtab   " turn off space filled tabs
+
+

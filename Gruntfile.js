@@ -23,14 +23,14 @@ module.exports = function(grunt) {
 				banner: "<%= meta.banner %>"
 			},
 			dist: {
-				src: ["src/jquery.boilerplate.js"],
-				dest: "dist/jquery.boilerplate.js"
+				src: ["build/*.js", "src/jquery.password-validator.js"],
+				dest: "dist/jquery.password-validator.js"
 			}
 		},
 
 		// Lint definitions
 		jshint: {
-			files: ["src/jquery.boilerplate.js"],
+			files: ["src/jquery.password-validator.js"],
 			options: {
 				jshintrc: ".jshintrc"
 			}
@@ -39,8 +39,8 @@ module.exports = function(grunt) {
 		// Minify definitions
 		uglify: {
 			my_target: {
-				src: ["dist/jquery.boilerplate.js"],
-				dest: "dist/jquery.boilerplate.min.js"
+				src: ["dist/jquery.password-validator.js"],
+				dest: "dist/jquery.password-validator.min.js"
 			},
 			options: {
 				banner: "<%= meta.banner %>"
@@ -51,7 +51,34 @@ module.exports = function(grunt) {
 		coffee: {
 			compile: {
 				files: {
-					"dist/jquery.boilerplate.js": "src/jquery.boilerplate.coffee"
+					"dist/jquery.password-validator.js": "src/jquery.password-validator.coffee"
+				}
+			}
+		},
+
+
+		jst: {
+			compile: {
+				options: {
+					processName: function ( filePath ) {
+						return filePath.match(/src\/templates\/(.*)\.jst/)[1];
+					}
+				},
+
+				files: {
+					"build/templates.js": ["src/templates/**/*.jst"]
+				}
+			}
+		},
+
+		sass: {
+			dist: {
+				options: {
+					cacheLocation: 'build/sass-cache'
+				},
+
+				files: {
+					'dist/jquery-password-validator.css': 'src/stylesheets/jquery-password-validator.scss'
 				}
 			}
 		},
@@ -60,7 +87,7 @@ module.exports = function(grunt) {
 		// Better than calling grunt a million times
 		// (call 'grunt watch')
 		watch: {
-		    files: ['src/*'],
+		    files: ['src/**/*'],
 		    tasks: ['default']
 		}
 
@@ -71,8 +98,10 @@ module.exports = function(grunt) {
 	grunt.loadNpmTasks("grunt-contrib-uglify");
 	grunt.loadNpmTasks("grunt-contrib-coffee");
 	grunt.loadNpmTasks("grunt-contrib-watch");
+	grunt.loadNpmTasks('grunt-contrib-jst');
+	grunt.loadNpmTasks('grunt-contrib-sass');
 
-	grunt.registerTask("build", ["concat", "uglify"]);
+	grunt.registerTask("build", ["sass", "jst", "concat", "uglify"]);
 	grunt.registerTask("default", ["jshint", "build"]);
 	grunt.registerTask("travis", ["default"]);
 

@@ -1,50 +1,144 @@
-// the semi-colon before function invocation is a safety net against concatenated
-// scripts and/or other plugins which may not be closed properly.
 ;(function ( $, window, document, undefined ) {
 
 	"use strict";
 
-		// undefined is used here as the undefined global variable in ECMAScript 3 is
-		// mutable (ie. it can be changed by someone else). undefined isn't really being
-		// passed in so we can ensure the value of it is truly undefined. In ES5, undefined
-		// can no longer be modified.
-
-		// window and document are passed through as local variable rather than global
-		// as this (slightly) quickens the resolution process and can be more efficiently
-		// minified (especially when both are regularly referenced in your plugin).
-
-		// Create the defaults once
-		var pluginName = "defaultPluginName",
+		// Plugin setup
+		var pluginName = "passwordValidator",
 				defaults = {
-				propertyName: "value"
+				length: 12,
+				require: ["length", "lower", "upper", "digit"]
 		};
 
 		// The actual plugin constructor
 		function Plugin ( element, options ) {
 				this.element = element;
-				// jQuery has an extend method which merges the contents of two or
-				// more objects, storing the result in the first object. The first object
-				// is generally empty as we don't want to alter the default options for
-				// future instances of the plugin
 				this.settings = $.extend( {}, defaults, options );
 				this._defaults = defaults;
 				this._name = pluginName;
 				this.init();
 		}
 
+		// Actual plugin code follows:
+
+		// Regular expressions used for validation
+		var validators = {
+				upper: {
+						validate: function ( password ) {
+								return password.match(/[A-Z]/) != null;
+						},
+						message: "capital letter"
+				},
+				lower: {
+						validate: function ( password ) {
+								return password.match(/[a-z]/) != null;
+						},
+						message: "lower case letter"
+				},
+				digit: {
+						validate: function ( password ) {
+								return password.match(/\d/) != null;
+						},
+						message: "number"
+				},
+				length: {
+						validate: function ( password, settings ) {
+								return password.length >= settings.length;
+						},
+						message: function ( settings ) {
+								return settings.length + " characters";
+						},
+						preface: "Be at least"
+				}
+		};
+
 		// Avoid Plugin.prototype conflicts
 		$.extend(Plugin.prototype, {
 				init: function () {
-						// Place initialization logic here
-						// You already have access to the DOM element and
-						// the options via the instance, e.g. this.element
-						// and this.settings
-						// you can add more functions like the one below and
-						// call them like so: this.yourOtherFunction(this.element, this.settings).
-						console.log("xD");
+						this.wrapInput( this.element );
+						this.inputWrapper.append( this.buildUi() );
+						this.bindBehavior();
 				},
-				yourOtherFunction: function () {
-						// some logic
+
+				wrapInput: function ( input ) {
+						$(input).wrap( JST.input_wrapper() );
+						this.inputWrapper = $( ".jq-password-validation__outer-wrapper" );
+						return this.inputWrapper;
+				},
+
+				buildUi: function () {
+						var ui = $( JST.container() );
+						var _this = this;
+
+						_.each(this.settings.require, function ( requirement ) {
+								var message;
+								if ( validators[requirement].message instanceof Function ) {
+										message = validators[requirement].message( _this.settings );
+								} else {
+										message = validators[requirement].message;
+								}
+
+								var preface = validators[requirement].preface || "Contain a";
+
+								var ruleMarkup = JST.row({
+									ruleName: requirement,
+									message: message,
+									preface: preface
+								});
+
+								ui.append( $( ruleMarkup ) );
+						});
+
+						this.ui = ui;
+						ui.hide();
+						return ui;
+				},
+
+				bindBehavior: function () {
+						var _this = this;
+						$( this.element ).on( "focus", function () {
+								_this.validate();
+								_this.showUi();
+						} );
+						$( this.element ).on( "blur", function () {
+								_this.hideUi();
+						} );
+						$( this.element ).on( "keyup", function () {
+							_this.validate();
+						} );
+				},
+
+				showUi: function () {
+						this.ui.show();
+						$( this.element ).parent().addClass("jq-password-validation__input-wrapper--active");
+				},
+
+				hideUi: function () {
+						this.ui.hide();
+						$( this.element ).parent().removeClass("jq-password-validation__input-wrapper--active");
+				},
+
+				validate: function () {
+						var currentPassword = $(this.element).val();
+						var _this = this;
+						_.each( this.settings.require, function ( requirement) {
+								if ( validators[requirement].validate(currentPassword, _this.settings ) ) {
+									_this.markRuleValid(requirement);
+								} else {
+									_this.markRuleInvalid(requirement);
+								}
+						});
+				},
+
+				markRuleValid: function (ruleName) {
+					var row = this.ui.find("." + ruleName);
+					row.addClass( "jq-password-validation__rule--valid" );
+					row.removeClass( "jq-password-validation__rule--invalid" );
+				},
+
+				markRuleInvalid: function (ruleName) {
+					var row = this.ui.find("." + ruleName);
+					row.removeClass( "jq-password-validation__rule--valid" );
+					row.addClass( "jq-password-validation__rule--invalid" );
 				}
 		});
 
