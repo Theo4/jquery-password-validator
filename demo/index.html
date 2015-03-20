@@ -1,18 +1,29 @@
 <!DOCTYPE html>
 <html>
 	<head>
-		<title>jQuery Boilerplate</title>
+		<title>jQuery Password Validator</title>
 		<script src="http://ajax.googleapis.com/ajax/libs/jquery/2.0.0/jquery.min.js"></script>
-		<script src="../src/jquery.boilerplate.js"></script>
+		<script src="underscore-min.js"></script>
+		<script src="../dist/jquery.password-validator.js"></script>
+		<link rel="stylesheet" href="../dist/jquery-password-validator.css"></link>
 	</head>
-	<body>
-		<div id="element"></div>
+	<body style="padding:10rem;">
+
+		<div>
+			<label style="display:block;">Password</label>
+			<input type="password" id="password">
+		</div>
+
 		<script>
 			$(function() {
-				$("#element").defaultPluginName({
-					propertyName: "a custom value"
-				});
+					$("#password").passwordValidator({
+						// list of qualities to require
+						require: ['length', 'lower', 'upper', 'digit'],
+						// minimum length requirement
+						length: 12
+					});
 			});
 		</script>
+
 	</body>
 </html>

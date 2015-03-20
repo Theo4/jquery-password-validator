@@ -1,18 +1,19 @@
 {
-	"name": "jquery-boilerplate",
-	"version": "3.5.0",
-	"homepage": "http://jqueryboilerplate.com",
+	"name": "jquery-password-validator",
+	"version": "0.0.1",
+	"homepage": "http://github.com/IoraHealth/jquery-password-validator",
 	"authors": [
-		"Zeno Rocha <hi@zenorocha.com>"
+		"Myke Cameron <mykecameron@gmail.com>",
+		"Matt Sisto <msisto@gmail.com>"
 	],
-	"description": "A jump-start for jQuery plugins development.",
-	"main": "src/jquery.boilerplate.js",
+	"description": "Plugin for live validation of password requirements",
+	"main": "src/jquery.password-validator.js",
 	"keywords": [
 		"jquery",
 		"plugin",
-		"boilerplate",
+		"password",
 		"jquery-plugin",
-		"jquery-boilerplate"
+		"jquery-password-validator"
 	],
 	"license": "MIT"
 }
