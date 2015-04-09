@@ -8,21 +8,11 @@
  */
 this["JST"] = this["JST"] || {};
 
-this["JST"]["container"] = function(obj) {
-obj || (obj = {});
-var __t, __p = '', __e = _.escape;
-with (obj) {
-__p += '<div class="jq-password-validation">\n\t<div class="jq-password-validation__heading">Your password must:</div>\n</div>\n';
-
-}
-return __p
-};
-
 this["JST"]["input_wrapper"] = function(obj) {
 obj || (obj = {});
 var __t, __p = '', __e = _.escape;
 with (obj) {
-__p += '<div class="jq-password-validation__outer-wrapper"><div class="jq-password-validation__input-wrapper">\n';
+__p += '<div class="jq-password-validator">\n';
 
 }
 return __p
@@ -32,9 +22,19 @@ this["JST"]["length"] = function(obj) {
 obj || (obj = {});
 var __t, __p = '', __e = _.escape;
 with (obj) {
-__p += '<div class="jq-password-validation__rule--valid length">\n\tBe at least <span class="jq-password-validation__rule__emphasis">' +
+__p += '<div class="jq-password-validator__rule is-valid length">\n\tBe at least <em>' +
 ((__t = ( length )) == null ? '' : __t) +
-' characters</span>\n</div>\n\n';
+' characters</em>\n</div>\n';
+
+}
+return __p
+};
+
+this["JST"]["popover"] = function(obj) {
+obj || (obj = {});
+var __t, __p = '', __e = _.escape;
+with (obj) {
+__p += '<div class="jq-password-validator__popover">\n\t<header>Your password must:</header>\n</div>\n';
 
 }
 return __p
@@ -44,13 +44,13 @@ this["JST"]["row"] = function(obj) {
 obj || (obj = {});
 var __t, __p = '', __e = _.escape;
 with (obj) {
-__p += '<div class="jq-password-validation__rule--invalid ' +
+__p += '<div class="jq-password-validator__rule ' +
 ((__t = ( ruleName )) == null ? '' : __t) +
-'">\n\t' +
+'">\n\t<svg xmlns="http://www.w3.org/2000/svg" class="jq-password-validator__checkmark" viewBox="0 0 8 8">\n\t  <path d="M6.41 0l-.69.72-2.78 2.78-.81-.78-.72-.72-1.41 1.41.72.72 1.5 1.5.69.72.72-.72 3.5-3.5.72-.72-1.44-1.41z" transform="translate(0 1)" />\n\t</svg>\n\t' +
 ((__t = ( preface )) == null ? '' : __t) +
-' <span class="jq-password-validation__rule__emphasis"> ' +
+'\n\t<em>' +
 ((__t = ( message )) == null ? '' : __t) +
-'</span>\n</div>\n';
+'</em>\n</div>\n';
 
 }
 return __p
@@ -118,12 +118,12 @@ return __p
 
 				wrapInput: function ( input ) {
 						$(input).wrap( JST.input_wrapper() );
-						this.inputWrapper = $( ".jq-password-validation__outer-wrapper" );
+						this.inputWrapper = $( ".jq-password-validator" );
 						return this.inputWrapper;
 				},
 
 				buildUi: function () {
-						var ui = $( JST.container() );
+						var ui = $( JST.popover() );
 						var _this = this;
 
 						_.each(this.settings.require, function ( requirement ) {
@@ -166,12 +166,14 @@ return __p
 
 				showUi: function () {
 						this.ui.show();
-						$( this.element ).parent().addClass("jq-password-validation__input-wrapper--active");
+						$( this.element ).parent().removeClass("is-hidden");
+						$( this.element ).parent().addClass("is-visible");
 				},
 
 				hideUi: function () {
 						this.ui.hide();
-						$( this.element ).parent().removeClass("jq-password-validation__input-wrapper--active");
+						$( this.element ).parent().removeClass("is-visible");
+						$( this.element ).parent().addClass("is-hidden");
 				},
 
 				validate: function () {
@@ -188,14 +190,14 @@ return __p
 
 				markRuleValid: function (ruleName) {
 					var row = this.ui.find("." + ruleName);
-					row.addClass( "jq-password-validation__rule--valid" );
-					row.removeClass( "jq-password-validation__rule--invalid" );
+					row.addClass( "is-valid" );
+					row.removeClass( "is-invalid" );
 				},
 
 				markRuleInvalid: function (ruleName) {
 					var row = this.ui.find("." + ruleName);
-					row.removeClass( "jq-password-validation__rule--valid" );
-					row.addClass( "jq-password-validation__rule--invalid" );
+					row.removeClass( "is-valid" );
+					row.addClass( "is-invalid" );
 				}
 		});
 

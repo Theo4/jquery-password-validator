@@ -6,12 +6,129 @@
 		<script src="underscore-min.js"></script>
 		<script src="../dist/jquery.password-validator.js"></script>
 		<link rel="stylesheet" href="../dist/jquery-password-validator.css"></link>
-	</head>
-	<body style="padding:10rem;">
+		<link href='http://fonts.googleapis.com/css?family=Ubuntu:300,500' rel='stylesheet' type='text/css'>
+		<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0"/>
 
-		<div>
-			<label style="display:block;">Password</label>
-			<input type="password" id="password">
+		<style>
+			* {
+				box-sizing: border-box;
+			}
+
+		  html {
+				font-size: 15px;
+			}
+
+			body {
+				background: #4E44A6;
+				color: #fff;
+				font-family: 'Ubuntu', sans-serif;
+				font-size: 15px;
+				font-weight: 300;
+				line-height: 1.6;
+				margin: 0;
+				padding: 0;
+			}
+
+			h1 {
+				font-size: 2rem;
+				font-weight: 300;
+				margin: 0;
+			}
+
+			.demo-container {
+				margin: 5rem auto;
+				max-width: 450px;
+				padding: 1rem;
+				width: 100%;
+			}
+
+			.demo-header {
+				padding: 1rem;
+			}
+
+			.demo-form {
+				height: 500px;
+				padding: 1rem;
+				width: 100%;
+			}
+
+			input[type="password"] {
+				background: transparent;
+				border: 1px solid #887AFF;
+				border-radius: 3px;
+				color: #fff;
+				font-family: 'Roboto Condensed', sans-serif;
+				font-size: 15px;
+				outline: none;
+				padding: 1rem;
+				transition: all 0.2s;
+				width: 100%;
+			}
+
+			input[type="password"]:hover,
+			input[type="password"]:focus {
+				border-color: #BFB7FF;
+			}
+
+			.jq-password-validator__popover {
+				background: #fff;
+				border-radius: 3px;
+				box-shadow: 0 1px 0 rgba(0, 0, 0, 0.3);
+				color: #4E44A6;
+				padding: 1.5rem;
+				transition: all 0.2s;
+			}
+
+			.jq-password-validator__popover header {
+				font-weight: normal;
+				margin-bottom: 0.5rem;
+			}
+
+			em {
+				border-bottom: 1px dotted;
+				font-style: normal;
+			}
+
+			.is-valid {
+				color: #4E44A6;
+			}
+
+			.jq-password-validator__checkmark {
+				fill: #44A64D;
+			}
+
+			.github-link {
+				position: fixed;
+				bottom: 1.5rem;
+				right: 1.5rem;
+			}
+
+			.github-svg {
+				fill: #887AFF;
+				height: 3rem;
+				width: 3rem;
+			}
+
+			.github-svg:hover {
+				fill: #fff;
+			}
+
+		</style>
+	</head>
+	<body>
+		<div class="demo-container">
+			<a class="github-link" href="https://github.com/IoraHealth/jquery-password-validator">
+				<svg class="github-svg" width="40px" height="40px" viewBox="0 0 121 118" xmlns="http://www.w3.org/2000/svg">
+					<path d="M60.388,0 C27.041,0 0,27.036 0,60.388 C0,87.069 17.303,109.705 41.297,117.69 C44.315,118.249 45.423,116.38 45.423,114.785 C45.423,113.345 45.367,108.588 45.341,103.542 C28.541,107.195 24.996,96.417 24.996,96.417 C22.249,89.437 18.291,87.581 18.291,87.581 C12.812,83.833 18.704,83.91 18.704,83.91 C24.768,84.336 27.961,90.133 27.961,90.133 C33.347,99.365 42.088,96.696 45.534,95.153 C46.076,91.25 47.641,88.586 49.368,87.078 C35.955,85.551 21.855,80.373 21.855,57.234 C21.855,50.641 24.214,45.254 28.077,41.025 C27.45,39.504 25.383,33.362 28.662,25.044 C28.662,25.044 33.733,23.421 45.273,31.234 C50.09,29.896 55.256,29.225 60.388,29.202 C65.52,29.225 70.69,29.896 75.516,31.234 C87.042,23.421 92.106,25.044 92.106,25.044 C95.393,33.362 93.325,39.504 92.698,41.025 C96.57,45.254 98.913,50.641 98.913,57.234 C98.913,80.428 84.786,85.535 71.339,87.03 C73.505,88.904 75.435,92.579 75.435,98.213 C75.435,106.293 75.365,112.796 75.365,114.785 C75.365,116.392 76.452,118.275 79.513,117.682 C103.494,109.688 120.775,87.06 120.775,60.388 C120.775,27.036 93.738,0 60.388,0"></path>
+				</svg>
+			</a>
+			<div class="demo-header">
+				<h1>jquery-password-validator.js</h1>
+				<p>A simple, easily themeable, drop-in solution for helping users meet burdensome password requirements.</p>
+			</div>
+			<div class="demo-form">
+				<input type="password" id="password" autofocus>
+			</div>
 		</div>
 
 		<script>
@@ -20,7 +137,7 @@
 						// list of qualities to require
 						require: ['length', 'lower', 'upper', 'digit'],
 						// minimum length requirement
-						length: 12
+						length: 8
 					});
 			});
 		</script>
