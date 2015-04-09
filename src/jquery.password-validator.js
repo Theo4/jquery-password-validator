@@ -61,12 +61,12 @@
 
 				wrapInput: function ( input ) {
 						$(input).wrap( JST.input_wrapper() );
-						this.inputWrapper = $( ".jq-password-validation__outer-wrapper" );
+						this.inputWrapper = $( ".jq-password-validator" );
 						return this.inputWrapper;
 				},
 
 				buildUi: function () {
-						var ui = $( JST.container() );
+						var ui = $( JST.popover() );
 						var _this = this;
 
 						_.each(this.settings.require, function ( requirement ) {
@@ -109,12 +109,14 @@
 
 				showUi: function () {
 						this.ui.show();
-						$( this.element ).parent().addClass("jq-password-validation__input-wrapper--active");
+						$( this.element ).parent().removeClass("is-hidden");
+						$( this.element ).parent().addClass("is-visible");
 				},
 
 				hideUi: function () {
 						this.ui.hide();
-						$( this.element ).parent().removeClass("jq-password-validation__input-wrapper--active");
+						$( this.element ).parent().removeClass("is-visible");
+						$( this.element ).parent().addClass("is-hidden");
 				},
 
 				validate: function () {
@@ -131,14 +133,14 @@
 
 				markRuleValid: function (ruleName) {
 					var row = this.ui.find("." + ruleName);
-					row.addClass( "jq-password-validation__rule--valid" );
-					row.removeClass( "jq-password-validation__rule--invalid" );
+					row.addClass( "is-valid" );
+					row.removeClass( "is-invalid" );
 				},
 
 				markRuleInvalid: function (ruleName) {
 					var row = this.ui.find("." + ruleName);
-					row.removeClass( "jq-password-validation__rule--valid" );
-					row.addClass( "jq-password-validation__rule--invalid" );
+					row.removeClass( "is-valid" );
+					row.addClass( "is-invalid" );
 				}
 		});
 
