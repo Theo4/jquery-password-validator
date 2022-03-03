@@ -5,7 +5,7 @@
   var pluginName = "passwordValidator",
     defaults = {
       length: 12,
-      require: ["length", "lower", "upper", "digit"],
+      require: ["length", "lower", "upper", "digit", "special"],
     };
 
   // The actual plugin constructor
@@ -40,6 +40,12 @@
       },
       message: "number",
     },
+		special: {
+      validate: function (password) {
+          return password.match(/[_\-!\?@.]/) != null;
+      },
+      message: "special character"
+		},
     length: {
       validate: function (password, settings) {
         return password.length >= settings.length;
@@ -48,7 +54,7 @@
         return settings.length + " characters";
       },
       preface: "Be at least",
-    },
+    }
   };
 
   // Avoid Plugin.prototype conflicts
